@@ -1,4 +1,6 @@
+import { addSongfunc } from '@/app/lib/action';
 import React from 'react'
+import FormComponent from './formComponent';
 
 const User = async () => {
   const res = await fetch('https://jsonplaceholder.typicode.com/users', { next: { revalidate: 10 } });
@@ -12,6 +14,7 @@ const User = async () => {
       <br/>
       <p>Dated: {new Date().toLocaleString()}</p>
       <p>{process.env.specialKey}</p>
+      <FormComponent/>
     </>
   )
 }
