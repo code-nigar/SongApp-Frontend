@@ -77,12 +77,14 @@
 
 
 
-
+'use client'
+import { useRef } from 'react'
 
 import Link from 'next/link';
 import { addSongfunc } from '@/app/lib/action';
 
 const AddSong = () => {
+    const ref = useRef(null);  
 
 
     return (
@@ -90,7 +92,11 @@ const AddSong = () => {
             <div className='flex flex-col justify-center items-center'>
                 <h1 className='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>Add Song</h1>
             
-                <form action={addSongfunc}>
+                <form ref={ref} action={async (formData)=>{
+                        await addSongfunc(formData);
+                        alert("Song Added Successfully");
+                        ref.current?.reset();
+                    }}>
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
                             <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Song Title</label>

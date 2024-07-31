@@ -15,7 +15,7 @@ async function addSongfunc(formData) {
             console.log("song added successfully from server")
         })
     } catch (error) {
-        console.error('Error fetching songs:', error);
+        console.error('Error adding songs:', error);
         return [];
     }
     revalidatePath('/songs')
@@ -34,4 +34,36 @@ const deleteRecord = async (id) => {
 
 }
 
-export {addSongfunc,deleteRecord}
+async function updateSongfunc(songId, formData) {
+    // console.log("formdata received ", songParam + "\n" + formData);
+    const title = formData.get('title');
+    const genre= formData.get('genre');
+    const artist = formData.get('artist');
+    const album= formData.get('album');
+    // const {title,genre,artist,album,id} = formData;
+    // console.log("formdata server action ,",formData)
+    try {
+        axios.put(`${process.env.SONG_API}/${songId}`,{title,genre,artist,album})
+        .then(res => {
+            console.log("song updated successfully from server")
+        })
+    } catch (error) {
+        console.log('Error updating songs:')//, error);
+    }
+    revalidatePath('/songs')
+    revalidatePath('/songs/song/[id]', 'page')
+}
+
+const fetchSongDetail = (songId) => {
+    try {
+        axios.get(`${process.env.SONG_API}/${songId}`).then(res => {
+            //console.log("song fetched ", res.data);
+            return res.data;
+        })
+    } catch (error) {
+        console.error('Error feftching song detail:', error);
+        return null;
+    }
+}
+
+export {addSongfunc,updateSongfunc,deleteRecord,fetchSongDetail}
